@@ -41,7 +41,7 @@ sources:
 
   - name: raw_dog
     description: Raw NYC dog licensing data loaded from BigQuery
-    database: data-analytics-project-485903
+    database: heayoon-cis9440
     schema: nyc_group5_raw_data
     tables:
       - name: source_nyc_dog_licensing
