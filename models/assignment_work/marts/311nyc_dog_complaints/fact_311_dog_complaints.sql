@@ -1,6 +1,6 @@
 WITH source AS (
   SELECT *
-  FROM {{ ref('stg_nyc_311_dot') }}
+  FROM {{ ref('stg_311nyc_dog_complaints') }}
 ),
 
 final AS (

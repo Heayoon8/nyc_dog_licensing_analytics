@@ -4,7 +4,7 @@ WITH complaint_types AS (
     descriptor,
     CAST(NULL AS STRING) AS additional_descriptor,
     status
-  FROM {{ ref('stg_nyc_311_dot') }}
+  FROM {{ ref('stg_311nyc_dog_complaints') }}
   WHERE complaint_type IS NOT NULL
 ),
 

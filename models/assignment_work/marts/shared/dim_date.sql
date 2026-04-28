@@ -1,7 +1,7 @@
 WITH all_dates AS (
 
   SELECT DISTINCT CAST(created_date AS DATE) AS full_date
-  FROM {{ ref('stg_nyc_311_dot') }}
+  FROM {{ ref('stg_311nyc_dog_complaints') }}
   WHERE created_date IS NOT NULL
 
   UNION DISTINCT

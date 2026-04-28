@@ -6,7 +6,7 @@ WITH incident_addresses AS (
     CAST(NULL AS STRING) AS city,
     CAST(NULL AS STRING) AS community_board,
     CAST(NULL AS STRING) AS council_district
-  FROM {{ ref('stg_nyc_311_dot') }}
+  FROM {{ ref('stg_311nyc_dog_complaints') }}
   WHERE incident_address IS NOT NULL
 ),
 

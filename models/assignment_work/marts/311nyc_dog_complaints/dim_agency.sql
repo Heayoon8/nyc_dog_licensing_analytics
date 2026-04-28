@@ -1,7 +1,7 @@
 WITH agencies AS (
   SELECT DISTINCT
     agency_name
-  FROM {{ ref('stg_nyc_311_dot') }}
+  FROM {{ ref('stg_311nyc_dog_complaints') }}
   WHERE agency_name IS NOT NULL
 ),
 
