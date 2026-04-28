@@ -1,0 +1,65 @@
+version: 2
+
+sources:
+  - name: raw_311
+    description: Raw NYC 311 service request data loaded from BigQuery
+    database: heayoon-cis9440
+    schema: nyc_group5_raw_data
+    tables:
+      - name: source_311nyc_service_requests
+        description: NYC 311 service requests related to dog or animal issues.
+        columns:
+          - name: unique_key
+            description: Unique ID for each 311 service request
+            tests:
+              - unique
+              - not_null
+          - name: created_date
+            description: Date and time the 311 request was created
+          - name: closed_date
+            description: Date and time the 311 request was closed
+          - name: agency
+            description: Agency code
+          - name: agency_name
+            description: Agency name
+          - name: complaint_type
+            description: Type of 311 complaint
+          - name: descriptor
+            description: Further description of the complaint
+          - name: incident_zip
+            description: Zip code of the incident
+          - name: borough
+            description: NYC borough
+          - name: incident_address
+            description: Incident address
+          - name: latitude
+            description: Latitude coordinate
+          - name: longitude
+            description: Longitude coordinate
+          - name: status
+            description: Current request status
+
+  - name: raw_dog
+    description: Raw NYC dog licensing data loaded from BigQuery
+    database: data-analytics-project-485903
+    schema: nyc_group5_raw_data
+    tables:
+      - name: source_nyc_dog_licensing
+        description: NYC dog licensing records.
+        columns:
+          - name: animalname
+            description: Dog name
+          - name: animalgender
+            description: Dog gender
+          - name: animalbirth
+            description: Dog birth year
+          - name: breedname
+            description: Dog breed
+          - name: zipcode
+            description: Owner zip code
+          - name: licenseissueddate
+            description: Date the license was issued
+          - name: licenseexpireddate
+            description: Date the license expired
+          - name: extract_year
+            description: Extract year of the record
