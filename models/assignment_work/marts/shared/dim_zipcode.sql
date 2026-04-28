@@ -1,16 +1,16 @@
 WITH all_zipcodes AS (
 
   SELECT DISTINCT
-    incident_zip AS zipcode,
-    borough
+    CAST(incident_zip AS STRING) AS zipcode,
+    CAST(borough AS STRING) AS borough
   FROM {{ ref('stg_nyc_311_dot') }}
   WHERE incident_zip IS NOT NULL
 
   UNION DISTINCT
 
   SELECT DISTINCT
-    zip_code AS zipcode,
-    NULL AS borough
+    CAST(zip_code AS STRING) AS zipcode,
+    CAST(NULL AS STRING) AS borough
   FROM {{ ref('stg_nyc_dog_licensing') }}
   WHERE zip_code IS NOT NULL
 ),
