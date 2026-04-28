@@ -1,19 +1,18 @@
-WITH animal_characteristics AS (
+WITH gender_birth_year AS (
   SELECT DISTINCT
-    breed_name,
-    CAST(NULL AS STRING) AS size_category,
-    CAST(NULL AS STRING) AS temperament
+    animal_gender,
+    CAST(animal_birth_year AS STRING) AS animal_birth_year
   FROM {{ ref('stg_nyc_dog_licensing') }}
-  WHERE breed_name IS NOT NULL
+  WHERE animal_gender IS NOT NULL
+     OR animal_birth_year IS NOT NULL
 ),
 
 final AS (
   SELECT
-    {{ dbt_utils.generate_surrogate_key(['breed_name', 'size_category', 'temperament']) }} AS animal_characteristics_key,
-    breed_name,
-    size_category,
-    temperament
-  FROM animal_characteristics
+    {{ dbt_utils.generate_surrogate_key(['animal_gender', 'animal_birth_year']) }} AS gender_birth_year_key,
+    animal_gender,
+    animal_birth_year
+  FROM gender_birth_year
 )
 
 SELECT *
