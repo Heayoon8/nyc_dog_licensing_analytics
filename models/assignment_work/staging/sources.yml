@@ -7,7 +7,7 @@ sources:
     schema: nyc_group5_raw_data
     tables:
       - name: source_311nyc_service_requests
-        description: NYC 311 service requests related to dog or animal issues.
+        description: NYC 311 service requests related to dog issues.
         columns:
           - name: unique_key
             description: Unique ID for each 311 service request
