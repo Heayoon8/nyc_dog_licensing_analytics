@@ -1,8 +1,5 @@
 WITH location_types AS (
-  SELECT DISTINCT
-    location_type
-  FROM {{ ref('stg_nyc_311_dot') }}
-  WHERE location_type IS NOT NULL
+  SELECT 'UNKNOWN' AS location_type
 ),
 
 final AS (
