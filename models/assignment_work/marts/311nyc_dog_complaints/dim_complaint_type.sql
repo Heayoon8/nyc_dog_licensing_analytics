@@ -2,7 +2,7 @@ WITH complaint_types AS (
   SELECT DISTINCT
     complaint_type,
     descriptor,
-    descriptor_2 AS additional_descriptor,
+    CAST(NULL AS STRING) AS additional_descriptor,
     status
   FROM {{ ref('stg_nyc_311_dot') }}
   WHERE complaint_type IS NOT NULL
