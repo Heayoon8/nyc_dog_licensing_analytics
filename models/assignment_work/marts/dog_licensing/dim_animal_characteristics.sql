@@ -1,5 +1,6 @@
 WITH source AS (
-    SELECT * FROM {{ source('group5_raw', 'source_nyc_dog_licensing') }}
+    SELECT * 
+    FROM {{ ref('stg_nyc_dog_licensing') }}
 ),
 
 cleaned AS (
