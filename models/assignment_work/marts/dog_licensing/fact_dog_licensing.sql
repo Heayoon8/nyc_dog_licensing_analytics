@@ -47,4 +47,18 @@ final AS (
 
         -- FK to dim_date
         {{ dbt_utils.generate_surrogate_key([
-            'CAST(source.license_issued_date AS DATE
+            'CAST(source.license_issued_date AS DATE)'
+        ]) }} AS license_issued_date_key,
+
+        {{ dbt_utils.generate_surrogate_key([
+            'CAST(source.license_expired_date AS DATE)'
+        ]) }} AS license_expired_date_key,
+
+        CAST(source.extract_year AS STRING) AS extract_year
+
+    FROM source
+    LEFT JOIN animal_chars
+        ON source.breed_name = animal_chars.breed_name
+)
+
+SELECT * FROM final
