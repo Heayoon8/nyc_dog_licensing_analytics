@@ -26,12 +26,26 @@ sources:
             description: Type of 311 complaint
           - name: descriptor
             description: Further description of the complaint
+          - name: descriptor_2
+            description: Additional descriptor
+          - name: location_type
+            description: Type of incident location
           - name: incident_zip
             description: Zip code of the incident
-          - name: borough
-            description: NYC borough
           - name: incident_address
             description: Incident address
+          - name: address_type
+            description: Address type
+          - name: street_name
+            description: Street name
+          - name: city
+            description: City
+          - name: community_board
+            description: Community board
+          - name: council_district
+            description: Council district
+          - name: borough
+            description: NYC borough
           - name: latitude
             description: Latitude coordinate
           - name: longitude
