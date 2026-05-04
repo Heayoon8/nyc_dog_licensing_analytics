@@ -1,27 +1,26 @@
 WITH complaint_types AS (
-  SELECT DISTINCT
-    complaint_type,
-    descriptor,
-    CAST(NULL AS STRING) AS additional_descriptor,
-    status
-  FROM {{ ref('stg_311nyc_dog_complaints') }}
-  WHERE complaint_type IS NOT NULL
+    SELECT DISTINCT
+        complaint_type,
+        descriptor,
+        descriptor_2 AS additional_descriptor,  
+        status
+    FROM {{ ref('stg_311nyc_dog_complaints') }}
+    WHERE complaint_type IS NOT NULL
 ),
 
 final AS (
-  SELECT
-    {{ dbt_utils.generate_surrogate_key([
-      'complaint_type',
-      'descriptor',
-      'additional_descriptor',
-      'status'
-    ]) }} AS complaint_type_key,
-    complaint_type,
-    descriptor,
-    additional_descriptor,
-    status
-  FROM complaint_types
+    SELECT
+        {{ dbt_utils.generate_surrogate_key([
+            'complaint_type',
+            'descriptor',
+            'additional_descriptor',
+            'status'
+        ]) }} AS complaint_type_key,
+        complaint_type,
+        descriptor,
+        additional_descriptor,
+        status
+    FROM complaint_types
 )
 
-SELECT *
-FROM final
+SELECT * FROM final
