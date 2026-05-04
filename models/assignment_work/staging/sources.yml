@@ -77,3 +77,13 @@ sources:
             description: Date the license expired
           - name: extract_year
             description: Extract year of the record
+
+      - name: Dim_Animal_CHaracteristics
+        description: Animal breed characteristics reference table.
+        columns:
+          - name: breed_name
+            description: Dog breed name
+          - name: size_category
+            description: Size category of the breed
+          - name: temperament
+            description: Temperament of the breed
