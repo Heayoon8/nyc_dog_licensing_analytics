@@ -58,9 +58,9 @@ cleaned AS (
         -- Location - clean zip code 
         CASE 
             WHEN UPPER(TRIM(CAST(zipcode AS STRING))) IN ('N/A', 'NA') THEN NULL
-            WHEN LENGTH(CAST(zipcode AS STRING)) = 5 THEN CAST(zipcode AS STRING)
-            WHEN LENGTH(CAST(zipcode AS STRING)) = 9 THEN CAST(zipcode AS STRING)
-            WHEN LENGTH(CAST(zipcode AS STRING)) = 10 AND REGEXP_CONTAINS(CAST(zipcode AS STRING), r'^\d{5}-\d{4}') THEN CAST(zipcode AS STRING)
+            WHEN LENGTH(CAST(zip_code AS STRING)) = 5 THEN CAST(zipcode AS STRING)
+            WHEN LENGTH(CAST(zip_code AS STRING)) = 9 THEN CAST(zipcode AS STRING)
+            WHEN LENGTH(CAST(zip_code AS STRING)) = 10 AND REGEXP_CONTAINS(CAST(zipcode AS STRING), r'^\d{5}-\d{4}') THEN CAST(zipcode AS STRING)
             ELSE NULL 
         END AS owner_zipcode,
 
@@ -73,7 +73,7 @@ cleaned AS (
         CURRENT_TIMESTAMP() AS _stg_loaded_at
         
     FROM source
-    WHERE zipcode IS NOT NULL
+    WHERE zip_code IS NOT NULL
       AND licenseissueddate IS NOT NULL
 )
 
