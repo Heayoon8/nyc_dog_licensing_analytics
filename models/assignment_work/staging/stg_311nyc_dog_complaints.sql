@@ -53,17 +53,17 @@ cleaned AS (
             ELSE 'UNKNOWN or CITYWIDE'
         END AS borough,
 
-        -- Coordinates
+        
         CAST(latitude AS NUMERIC) AS latitude,
         CAST(longitude AS NUMERIC) AS longitude,
 
-        -- Metadata
+     
         CURRENT_TIMESTAMP() AS _stg_loaded_at
 
     FROM source
     WHERE unique_key IS NOT NULL
       AND created_date IS NOT NULL
-      AND LOWER(complaint_type) LIKE '%dog%'  -- dog 관련 complaints만 필터
+      AND LOWER(complaint_type) LIKE '%dog%'  
 
     QUALIFY ROW_NUMBER() OVER (
         PARTITION BY unique_key
