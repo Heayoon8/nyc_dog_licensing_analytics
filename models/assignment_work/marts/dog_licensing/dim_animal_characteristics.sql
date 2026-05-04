@@ -3,7 +3,7 @@ WITH animal_characteristics AS (
         breed_name,
         size_category,
         temperament
-    FROM {{ source('raw_dog', 'Dim_Animal_CHaracteristics') }}
+    FROM {{ ref('stg_animal_characteristics') }}  
     WHERE breed_name IS NOT NULL
 ),
 
