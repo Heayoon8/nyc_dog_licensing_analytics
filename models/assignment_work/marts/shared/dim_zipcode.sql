@@ -7,9 +7,9 @@ WITH all_zipcodes AS (
     UNION DISTINCT
     SELECT DISTINCT
         'Unknown' AS borough,
-        owner_zipcode AS zipcode
+        zip_code AS zipcode        
     FROM {{ ref('stg_nyc_dog_licensing') }}
-    WHERE owner_zipcode IS NOT NULL
+    WHERE zip_code IS NOT NULL
 ),
 zipcode_dimension AS (
     SELECT
