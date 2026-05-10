@@ -6,7 +6,6 @@ WITH source AS (
 SELECT
     s.request_id AS unique_key,
 
-
     a.agency_key,
     z.zipcode_key,
     d.date_key AS created_date_key,
@@ -15,7 +14,7 @@ SELECT
     ct.complaint_type_key,
     lt.location_type_key,
 
-    
+
     s.latitude,
     s.longitude
 
@@ -25,13 +24,14 @@ LEFT JOIN {{ ref('dim_agency') }} a
 
 LEFT JOIN {{ ref('dim_zipcode') }} z
     ON CAST(s.incident_zip AS STRING) = z.zipcode
+    AND CAST(s.borough AS STRING) = z.borough
 
 LEFT JOIN {{ ref('dim_date') }} d
     ON CAST(s.created_date AS DATE) = d.full_date
 
 LEFT JOIN {{ ref('dim_location') }} loc
-    ON s.latitude = loc.latitude
-    AND s.longitude = loc.longitude
+    ON CAST(s.incident_zip AS STRING) = loc.zipcode
+    AND CAST(s.borough AS STRING) = loc.borough
 
 LEFT JOIN {{ ref('dim_incident_address') }} inc
     ON s.incident_address = inc.incident_address
