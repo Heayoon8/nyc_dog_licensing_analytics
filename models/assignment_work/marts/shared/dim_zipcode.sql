@@ -13,7 +13,7 @@ licensing_zip AS (
     WHERE zip_code IS NOT NULL
 ),
 
--- licensing zipcode에 311에서 borough 매핑
+
 all_zipcodes AS (
     SELECT
         lz.zipcode,
