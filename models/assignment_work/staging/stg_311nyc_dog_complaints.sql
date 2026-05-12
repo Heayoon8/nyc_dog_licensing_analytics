@@ -63,7 +63,7 @@ cleaned AS (
     FROM source
     WHERE unique_key IS NOT NULL
       AND created_date IS NOT NULL
-      AND LOWER(discriptor)) LIKE '%dog%'  
+      AND LOWER(discriptor) LIKE '%dog%'  
 
     QUALIFY ROW_NUMBER() OVER (
         PARTITION BY unique_key
