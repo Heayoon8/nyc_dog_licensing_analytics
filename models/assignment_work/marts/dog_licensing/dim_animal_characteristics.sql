@@ -9,11 +9,10 @@ WITH animal_characteristics AS (
 
 dog_licensing AS (
     SELECT DISTINCT
-        breed_name      
+        breed_name
     FROM {{ ref('stg_nyc_dog_licensing') }}
     WHERE breed_name IS NOT NULL
 ),
-
 
 joined AS (
     SELECT
@@ -21,7 +20,8 @@ joined AS (
         ac.size_category,
         ac.temperament
     FROM animal_characteristics AS ac
-    FULL OUTER JOIN dog_licensing AS dl
+    
+    LEFT JOIN dog_licensing AS dl
         ON ac.breed_name = dl.breed_name
 ),
 
