@@ -3,8 +3,26 @@ WITH animal_characteristics AS (
         breed_name,
         size_category,
         temperament
-    FROM {{ ref('stg_animal_characteristics') }}  
+    FROM {{ ref('stg_animal_characteristics') }}
     WHERE breed_name IS NOT NULL
+),
+
+dog_licensing AS (
+    SELECT DISTINCT
+        breed_name      
+    FROM {{ ref('stg_nyc_dog_licensing') }}
+    WHERE breed_name IS NOT NULL
+),
+
+
+joined AS (
+    SELECT
+        COALESCE(ac.breed_name, dl.breed_name) AS breed_name,
+        ac.size_category,
+        ac.temperament
+    FROM animal_characteristics AS ac
+    FULL OUTER JOIN dog_licensing AS dl
+        ON ac.breed_name = dl.breed_name
 ),
 
 final AS (
@@ -17,7 +35,7 @@ final AS (
         breed_name,
         size_category,
         temperament
-    FROM animal_characteristics
+    FROM joined
 )
 
 SELECT * FROM final

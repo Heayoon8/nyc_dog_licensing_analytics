@@ -1,17 +1,16 @@
 WITH locations AS (
     SELECT DISTINCT
-        latitude,
-        longitude
+        CAST(incident_zip AS STRING) AS zipcode,
+        CAST(borough AS STRING) AS borough
     FROM {{ ref('stg_311nyc_dog_complaints') }}
-    WHERE latitude IS NOT NULL
-      AND longitude IS NOT NULL
+    WHERE incident_zip IS NOT NULL
+    AND borough IS NOT NULL
 ),
-
 final AS (
     SELECT
-        {{ dbt_utils.generate_surrogate_key(['latitude', 'longitude']) }} AS location_id,
-        ST_GEOGPOINT(longitude, latitude) AS location
+        {{ dbt_utils.generate_surrogate_key(['zipcode', 'borough']) }} AS location_id,
+        zipcode,
+        borough
     FROM locations
 )
-
 SELECT * FROM final

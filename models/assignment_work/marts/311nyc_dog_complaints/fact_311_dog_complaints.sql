@@ -1,57 +1,54 @@
 WITH source AS (
     SELECT *
     FROM {{ ref('stg_311nyc_dog_complaints') }}
-),
-
-final AS (
-    SELECT
-        request_id AS unique_key,
-
-        -- Incident Address Key 
-        {{ dbt_utils.generate_surrogate_key([
-            'incident_address',
-            'street_name',
-            'address_type',
-            'city',
-            'community_board',
-            'council_district'
-        ]) }} AS incident_address_key,
-
-        -- Location Key 
-        {{ dbt_utils.generate_surrogate_key([
-            'latitude',
-            'longitude'
-        ]) }} AS location_id,
-
-        -- Complaint Type Key 
-        {{ dbt_utils.generate_surrogate_key([
-            'complaint_type',
-            'descriptor',
-            'descriptor_2',
-            'status'
-        ]) }} AS complaint_type_key,
-
-        -- Agency Key 
-        {{ dbt_utils.generate_surrogate_key(['agency']) }} AS agency_key,
-
-        -- Zipcode Key 
-        {{ dbt_utils.generate_surrogate_key(['incident_zip']) }} AS zipcode_key,
-
-        -- Date Key
-        {{ dbt_utils.generate_surrogate_key([
-            'CAST(created_date AS DATE)'
-        ]) }} AS created_date_key,
-
-        -- Location Type Key 
-        {{ dbt_utils.generate_surrogate_key(['location_type']) }} AS location_type_key,
-
-        -- Measures
-        latitude,
-        longitude
-
-    FROM source
-    WHERE latitude IS NOT NULL
-      AND longitude IS NOT NULL
 )
 
-SELECT * FROM final
+SELECT
+    s.request_id AS unique_key,
+
+    a.agency_key,
+    z.zipcode_key,
+    d.date_key AS created_date_key,
+    loc.location_id,
+    inc.incident_address_key,
+    ct.complaint_type_key,
+    lt.location_type_key,
+
+
+    s.latitude,
+    s.longitude
+
+FROM source s
+LEFT JOIN {{ ref('dim_agency') }} a
+    ON s.agency = a.agency
+
+LEFT JOIN {{ ref('dim_zipcode') }} z
+    ON CAST(s.incident_zip AS STRING) = z.zipcode
+    AND CAST(s.borough AS STRING) = z.borough
+
+LEFT JOIN {{ ref('dim_date') }} d
+    ON CAST(s.created_date AS DATE) = d.full_date
+
+LEFT JOIN {{ ref('dim_location') }} loc
+    ON CAST(s.incident_zip AS STRING) = loc.zipcode
+    AND CAST(s.borough AS STRING) = loc.borough
+
+LEFT JOIN {{ ref('dim_incident_address') }} inc
+    ON s.incident_address = inc.incident_address
+    AND s.street_name = inc.street_name
+    AND s.address_type = inc.address_type
+    AND s.city = inc.city
+    AND s.community_board = inc.community_board
+    AND s.council_district = inc.council_district
+
+LEFT JOIN {{ ref('dim_complaint_type') }} ct
+    ON s.complaint_type = ct.complaint_type
+    AND s.descriptor = ct.descriptor
+    AND s.descriptor_2 = ct.additional_descriptor
+    AND s.status = ct.status
+
+LEFT JOIN {{ ref('dim_location_type') }} lt
+    ON s.location_type = lt.location_type
+
+WHERE s.latitude IS NOT NULL
+AND s.longitude IS NOT NULL
