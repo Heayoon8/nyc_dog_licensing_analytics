@@ -37,9 +37,10 @@ cleaned AS (
         CASE
             WHEN incident_zip IS NULL THEN NULL
             WHEN UPPER(TRIM(CAST(incident_zip AS STRING))) IN ('N/A', 'NA', 'UNKNOWN') THEN NULL
-            WHEN LENGTH(TRIM(CAST(incident_zip AS STRING))) = 5 THEN TRIM(CAST(incident_zip AS STRING))
-            WHEN REGEXP_CONTAINS(TRIM(CAST(incident_zip AS STRING)), r'^\d{5}-\d{4}$')
+            WHEN REGEXP_CONTAINS(TRIM(CAST(incident_zip AS STRING)), r'^\d{5}$')
                 THEN TRIM(CAST(incident_zip AS STRING))
+            WHEN REGEXP_CONTAINS(TRIM(CAST(incident_zip AS STRING)), r'^\d{5}-\d{4}$')
+                THEN SUBSTR(TRIM(CAST(incident_zip AS STRING)), 1, 5)
             ELSE NULL
         END AS incident_zip,
 
@@ -50,20 +51,17 @@ cleaned AS (
             WHEN UPPER(TRIM(CAST(borough AS STRING))) IN ('BROOKLYN', 'KINGS COUNTY') THEN 'Brooklyn'
             WHEN UPPER(TRIM(CAST(borough AS STRING))) IN ('QUEENS', 'QUEEN', 'QUEENS COUNTY') THEN 'Queens'
             WHEN UPPER(TRIM(CAST(borough AS STRING))) IN ('STATEN ISLAND', 'RICHMOND COUNTY') THEN 'Staten Island'
-            ELSE 'UNKNOWN or CITYWIDE'
+            ELSE 'Unknown'
         END AS borough,
 
-        
-        CAST(latitude AS NUMERIC) AS latitude,
-        CAST(longitude AS NUMERIC) AS longitude,
+        SAFE_CAST(latitude AS NUMERIC) AS latitude,
+        SAFE_CAST(longitude AS NUMERIC) AS longitude,
 
-     
         CURRENT_TIMESTAMP() AS _stg_loaded_at
 
     FROM source
     WHERE unique_key IS NOT NULL
       AND created_date IS NOT NULL
-      AND discriptor LIKE '%dog%'  
 
     QUALIFY ROW_NUMBER() OVER (
         PARTITION BY unique_key
@@ -71,4 +69,5 @@ cleaned AS (
     ) = 1
 )
 
-SELECT * FROM cleaned
+SELECT *
+FROM cleaned
